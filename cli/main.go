@@ -1,25 +1,14 @@
 package main
 
 import (
-	"apigo/infra"
-	"fmt"
+	"apigo/router"
 	"log"
 	"net/http"
 )
 
 func main() {
 
-	mux := http.NewServeMux()
-
-	dbConnect, err := infra.Connect()
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println(dbConnect)
-
-	mux.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
-	})
+	mux := router.NewRouter()
 
 	log.Fatal(http.ListenAndServe(":9999", mux))
 }

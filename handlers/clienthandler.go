@@ -3,26 +3,32 @@ package handlers
 import (
 	"apigo/usecase"
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
-type customerHandler struct {
+type CustomerHandler struct {
 	customerUsecase usecase.CustomerUsecase
 }
 
-func NewCustumoerHandler(usecase usecase.CustomerUsecase) customerHandler {
-	return customerHandler{
+func NewCustomerHandler(usecase usecase.CustomerUsecase) CustomerHandler {
+	return CustomerHandler{
 		customerUsecase: usecase,
 	}
 }
 
-func (c *customerHandler) GetCustomers(w http.ResponseWriter, r *http.Request) {
+func (c *CustomerHandler) GetCustomer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	customers, err := c.customerUsecase.GetCustomers()
 	if err != nil {
-		c.json(w, http.StatusInternalServerError, err)
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{
+			"error": err.Error(),
+		})
+		return
 	}
-	c.json(w, http.StatusOK, customers)
+	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(customers)
+
 }
