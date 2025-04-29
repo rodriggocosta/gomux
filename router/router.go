@@ -18,7 +18,7 @@ func NewRouter() *http.ServeMux {
 		log.Fatalf("Error ao conectar ao database: %v", err)
 	}
 
-	defer dbConnection.Close()
+	//	defer dbConnection.Close()
 
 	customerRepo := repository.NewCustomerRepository(dbConnection)
 	customerUsecase := usecase.NewCustomerUsecase(customerRepo)
