@@ -40,14 +40,14 @@ func (cr *CustomerRepository) GetCustomers() ([]entity.Customers, error) {
 			&customerObjt.CreatedAt,
 			&customerObjt.UpdatedAt,
 		)
-	}
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
 
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
+		clientList = append(clientList, customerObjt)
 
-	clientList = append(clientList, customerObjt)
+	}
 
 	return clientList, nil
 }
