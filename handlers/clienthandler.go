@@ -35,6 +35,8 @@ func (c *CustomerHandler) GetCustomer(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *CustomerHandler) PostCustomer(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json")
 	var customer entity.Customers
 	err := json.NewDecoder(r.Body).Decode(&customer)
 
@@ -44,9 +46,7 @@ func (c *CustomerHandler) PostCustomer(w http.ResponseWriter, r *http.Request) {
 
 	insertCustomer, err := c.customerUsecase.PostCustomer(customer)
 
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(insertCustomer)
-
 	w.WriteHeader(http.StatusCreated)
 
+	json.NewEncoder(w).Encode(insertCustomer)
 }
