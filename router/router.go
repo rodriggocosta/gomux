@@ -25,6 +25,7 @@ func NewRouter() *http.ServeMux {
 	customerHandlers := handlers.NewCustomerHandler(customerUsecase)
 
 	r.HandleFunc("/clientes", customerHandlers.GetCustomer)
+	r.HandleFunc("/clientes/cadastrar", customerHandlers.PostCustomer)
 
 	return r
 }
