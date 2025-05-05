@@ -3,6 +3,7 @@ package usecase
 import (
 	"apigo/entity"
 	"apigo/repository"
+	"fmt"
 )
 
 type CustomerUsecase struct {
@@ -26,6 +27,16 @@ func (cr *CustomerUsecase) PostCustomer(customer entity.Customers) (entity.Custo
 		return entity.Customers{}, err
 	}
 	customer.ID = customerId
+
+	return customer, nil
+}
+
+func (cr *CustomerUsecase) GetCustomerById(customer_id int) (*entity.Customers, error) {
+	customer, err := cr.repository.GetCustomerById(customer_id)
+
+	if err != nil {
+		return nil, fmt.Errorf("erro ao buscar cliente com ID %d: %w", customer_id, err)
+	}
 
 	return customer, nil
 }

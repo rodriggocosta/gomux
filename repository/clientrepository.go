@@ -73,3 +73,32 @@ func (cr *CustomerRepository) PostCustomer(customer entity.Customers) (int, erro
 
 	return customer_id, nil
 }
+
+func (cr *CustomerRepository) GetCustomerById(customer_id int) (*entity.Customers, error) {
+	query, err := cr.connection.Prepare("SELECT * FROM customers WHERE customer_id = $1")
+
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer query.Close()
+	var customer entity.Customers
+
+	err = query.QueryRow(customer_id).Scan(
+		&customer.ID,
+		&customer.Name,
+		&customer.Email,
+		&customer.Phone,
+		&customer.CreatedAt,
+		&customer.UpdatedAt,
+	)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, err
+		}
+		return nil, err
+	}
+	return &customer, nil
+
+}
