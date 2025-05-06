@@ -102,3 +102,23 @@ func (cr *CustomerRepository) GetCustomerById(customer_id int) (*entity.Customer
 	return &customer, nil
 
 }
+
+func (cr *CustomerRepository) DeleteById(customer_id int) error {
+	query := "DELETE FROM customers WHERE customer_id = $1"
+
+	res, err := cr.connection.Exec(query, customer_id)
+	if err != nil {
+		return fmt.Errorf("Erro ao deletar cliente: %w", err)
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("Erro ao verifcar delecao: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return sql.ErrNoRows
+	}
+
+	return nil
+}

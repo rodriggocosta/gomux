@@ -40,3 +40,7 @@ func (cr *CustomerUsecase) GetCustomerById(customer_id int) (*entity.Customers, 
 
 	return customer, nil
 }
+
+func (cr *CustomerUsecase) DeleteById(customer_id int) error {
+	return cr.repository.DeleteById(customer_id)
+}

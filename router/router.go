@@ -27,6 +27,6 @@ func NewRouter() *http.ServeMux {
 	r.HandleFunc("/clientes", customerHandlers.GetCustomer)
 	r.HandleFunc("/clientes/cadastrar", customerHandlers.PostCustomer)
 	r.HandleFunc("/cliente", customerHandlers.GetCustomerById)
-
+	r.HandleFunc("/cliente/delete", customerHandlers.DeleteById)
 	return r
 }

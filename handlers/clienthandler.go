@@ -71,7 +71,7 @@ func (c *CustomerHandler) GetCustomerById(w http.ResponseWriter, r *http.Request
 			return
 		}
 
-		http.Error(w, "Error interno", http.StatusInternalServerError)
+		http.Error(w, "Erro no Servidor", http.StatusInternalServerError)
 		return
 	}
 
@@ -80,5 +80,30 @@ func (c *CustomerHandler) GetCustomerById(w http.ResponseWriter, r *http.Request
 		fmt.Println("Erro ao codificar JSON", err)
 		http.Error(w, "Erro ao retornar dados do cliente", http.StatusInternalServerError)
 	}
+
+}
+
+func (c *CustomerHandler) DeleteById(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	convId := r.URL.Query().Get("customer_id")
+	customerId, err := strconv.Atoi(convId)
+
+	if err != nil {
+		http.Error(w, "ID do cliente e obrigatorio", http.StatusBadRequest)
+		return
+	}
+
+	err = c.customerUsecase.DeleteById(customerId)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Cliente nao encontrado", http.StatusNotFound)
+			return
+		}
+
+		http.Error(w, "Error no Servidor", http.StatusInternalServerError)
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 
 }
