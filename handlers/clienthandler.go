@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -105,5 +106,39 @@ func (c *CustomerHandler) DeleteById(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNoContent)
+
+}
+
+func (c *CustomerHandler) Update(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	convId := r.URL.Query().Get("customer_id")
+	customerID, err := strconv.Atoi(convId)
+
+	if err != nil {
+		http.Error(w, "ID do cliente e obrigatorio", http.StatusBadRequest)
+		return
+	}
+
+	var customer entity.Customers
+
+	if err := json.NewDecoder(r.Body).Decode(&customer); err != nil {
+		http.Error(w, "Formato Invalido", http.StatusBadRequest)
+		return
+	}
+
+	err = c.customerUsecase.Update(customerID, &customer)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Cliente nao encontrado", http.StatusNotFound)
+			return
+		}
+		log.Printf("Erro ao atualizar cliente: %v", err)
+		http.Error(w, "Erro no servidor", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Cliente atualizado com sucesso!"})
 
 }

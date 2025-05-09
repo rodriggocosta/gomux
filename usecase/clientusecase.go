@@ -44,3 +44,7 @@ func (cr *CustomerUsecase) GetCustomerById(customer_id int) (*entity.Customers, 
 func (cr *CustomerUsecase) DeleteById(customer_id int) error {
 	return cr.repository.DeleteById(customer_id)
 }
+
+func (cr *CustomerUsecase) Update(customer_id int, customer *entity.Customers) error {
+	return cr.repository.Update(customer_id, customer)
+}

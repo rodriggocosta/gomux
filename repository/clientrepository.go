@@ -104,6 +104,7 @@ func (cr *CustomerRepository) GetCustomerById(customer_id int) (*entity.Customer
 }
 
 func (cr *CustomerRepository) DeleteById(customer_id int) error {
+	// essa tambem e outra forma, e funciona de boas
 	query := "DELETE FROM customers WHERE customer_id = $1"
 
 	res, err := cr.connection.Exec(query, customer_id)
@@ -114,6 +115,28 @@ func (cr *CustomerRepository) DeleteById(customer_id int) error {
 	rowsAffected, err := res.RowsAffected()
 	if err != nil {
 		return fmt.Errorf("Erro ao verifcar delecao: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return sql.ErrNoRows
+	}
+
+	return nil
+}
+
+func (cr *CustomerRepository) Update(customer_id int, customer *entity.Customers) error {
+	//	query, err := cr.connection.Prepare("UPADATE customers SET name = $1, email = $2, phone = $3, customer_id = %4")
+	query := "UPDATE customers SET name = $1, email = $2, phone = $3 WHERE customer_id = $4"
+
+	res, err := cr.connection.Exec(query, customer.Name, customer.Email, customer.Phone, customer_id)
+
+	if err != nil {
+		return fmt.Errorf("Erro ao atualizar dados: %w", err)
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("Erro ao tentar atualizar: %w", err)
 	}
 
 	if rowsAffected == 0 {
