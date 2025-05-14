@@ -4,15 +4,36 @@
 
 CREATE TYPE status AS ENUM ('ATIVO', 'INATIVO');
 
-CREATE TABELA produtos(
-  produtos_id SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  code INT NOT NULL UNIQUE,
-  price DECIMAL(10, 2) NOT NULL,
-  stock INT NOT NULL,
-  status status NOT NULL,
-  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
+-- DEPOIS ADICIONAR MAIS DUAS COLUNAS CEP OU CNP 
+-- E TALVEZ ADICIONAR UM PARA ATIVO OU NAO
+-- TABELA DE ENDERES
+CREATE TYPE status AS ENUM ('ACTIVE', 'INACTIVE');
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    code INT NOT NULL UNIQUE,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL,
+    expiration_date DATE NOT NULL,
+    supplier VARCHAR(100) NOT NULL,
+    brand VARCHAR(100) NOT NULL,
+    status status,
+    createdAt TIMESTEMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTEMP DEFAULT CURRENT_TIMESTAMP,
+    
+    customer_id INT REFERENCES customers(customer_id)
+);
+
+CREATE TABELA address(
+  address_id SERIAL PRIMARY KEY,
+  estado VARCHAR(2) NOT NULL,
+  cidade VARCHAR(255) NOT NULL,
+  bairro VARCHAR(60) NOT NULL,
+  rua VARCHAR(6) NOT NULL,
+  numerodacasa INT,
+  cep VARCHAR(10) NOT NULL,
+  observacao VARCHAR(100)
 
   customer_id INT REFERENCES customers(customer_id)
+  
 );

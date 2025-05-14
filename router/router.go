@@ -7,6 +7,10 @@ import (
 	"apigo/usecase"
 	"log"
 	"net/http"
+
+	handlerProduct "apigo/handlers/products"
+	repositoryProduct "apigo/repository/products"
+	usecaseProduct "apigo/usecase/products"
 )
 
 func NewRouter() *http.ServeMux {
@@ -29,6 +33,12 @@ func NewRouter() *http.ServeMux {
 	r.HandleFunc("/cliente", customerHandlers.GetCustomerById)
 	r.HandleFunc("/cliente/delete", customerHandlers.DeleteById)
 	r.HandleFunc("/cliente/editar", customerHandlers.Update)
+
+	productRepository := repositoryProduct.NewProductRepository(dbConnection)
+	productUsecase := usecaseProduct.NewProductUsecase(productRepository)
+	productHandler := handlerProduct.NewProductHandler(productUsecase)
+
+	r.HandleFunc("/produtos", productHandler.GetProduct)
 
 	return r
 }
