@@ -38,7 +38,11 @@ func NewRouter() *http.ServeMux {
 	productUsecase := usecaseProduct.NewProductUsecase(productRepository)
 	productHandler := handlerProduct.NewProductHandler(productUsecase)
 
-	r.HandleFunc("/produtos", productHandler.GetProduct)
+	createProductsRepository := repositoryProduct.NewProductsCreateRepository(dbConnection)
+	createProductUsercase := usecaseProduct.NewProductsCreateUsecase(repositoryProduct.ProductCreateRepository(createProductsRepository))
+	createProductHandler := handlerProduct.NewProductsCreateHandlers(createProductUsercase)
 
+	r.HandleFunc("/produtos", productHandler.GetProduct)
+	r.HandleFunc("/produtos/cadastrar", createProductHandler.Create)
 	return r
 }

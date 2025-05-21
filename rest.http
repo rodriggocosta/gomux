@@ -1,0 +1,21 @@
+#Teste de rotas do customers
+http://localhost:9999
+GET /clientes
+
+#POST /clientes/cadastrar
+#{
+#    "name": "Junior Martins",
+#    "email": "junior@email.com",
+#    "phone": "98974541250"
+#}
+
+#PUT /cliente/editar?customer_id=72
+#{
+ #   "name": "",
+ #   "emial": "",
+ #   "phone": ""
+#}
+
+#GET /cliente?customer_id=72
+
+#DELETE /cliente/delete?customer_id=72

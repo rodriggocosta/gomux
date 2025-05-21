@@ -7,19 +7,19 @@ import (
 )
 
 type ProductHandler struct {
-	procustUsecase products.ProductUsecase
+	productCresteUsecase products.ProductUsecase
 }
 
 func NewProductHandler(usecase products.ProductUsecase) ProductHandler {
 	return ProductHandler{
-		procustUsecase: usecase,
+		productCresteUsecase: usecase,
 	}
 }
 
-func (p *ProductHandler) GetProduct(w http.ResponseWriter, r *http.Request) {
+func (pr *ProductHandler) GetProduct(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	product, err := p.procustUsecase.GetProduct()
+	product, err := pr.productCresteUsecase.GetProduct()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{
