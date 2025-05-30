@@ -7,7 +7,7 @@ import (
 type Products struct {
 	Product_id int       `json:"product_id"`
 	Name       string    `json:"name"`
-	Price      float32   `json:"price"`
+	Price      string    `json:"price"`
 	Code       int       `json:"code"`
 	Validity   time.Time `json:"validity"`
 	Stock      int       `json:"stock"`
