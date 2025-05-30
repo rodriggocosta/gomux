@@ -33,10 +33,12 @@ func (cr *CustomerRepository) GetCustomers() ([]entity.Customers, error) {
 
 	for rows.Next() {
 		err = rows.Scan(
-			&customerObjt.ID,
+			&customerObjt.Customer_id,
 			&customerObjt.Name,
 			&customerObjt.Email,
 			&customerObjt.Phone,
+			&customerObjt.Cpf,
+			&customerObjt.Cnpj,
 			&customerObjt.CreatedAt,
 			&customerObjt.UpdatedAt,
 		)
@@ -55,7 +57,7 @@ func (cr *CustomerRepository) GetCustomers() ([]entity.Customers, error) {
 func (cr *CustomerRepository) PostCustomer(customer entity.Customers) (int, error) {
 	var customer_id int
 
-	query, err := cr.connection.Prepare("INSERT INTO customers(name, email, phone) VALUES ($1, $2, $3) RETURNING customer_id")
+	query, err := cr.connection.Prepare("INSERT INTO customers(name, email, phone, cpf, cnpj) VALUES($1, $2, $3, $4, $5) RETURNING customer_id")
 
 	if err != nil {
 		fmt.Println(err)
@@ -63,7 +65,7 @@ func (cr *CustomerRepository) PostCustomer(customer entity.Customers) (int, erro
 	}
 
 	// comentario temporario: TALVEZ EU TENHA QUE COLOCAR OS CAMPOS CREATEDAT E UPDATEAT
-	err = query.QueryRow(customer.Name, customer.Email, customer.Phone).Scan(&customer_id)
+	err = query.QueryRow(customer.Name, customer.Email, customer.Phone, customer.Cpf, customer.Cnpj).Scan(&customer_id)
 	if err != nil {
 		fmt.Println(err)
 		return 0, nil
@@ -85,10 +87,12 @@ func (cr *CustomerRepository) GetCustomerById(customer_id int) (*entity.Customer
 	var customer entity.Customers
 
 	err = query.QueryRow(customer_id).Scan(
-		&customer.ID,
+		&customer.Customer_id,
 		&customer.Name,
 		&customer.Email,
 		&customer.Phone,
+		&customer.Cpf,
+		&customer.Cnpj,
 		&customer.CreatedAt,
 		&customer.UpdatedAt,
 	)

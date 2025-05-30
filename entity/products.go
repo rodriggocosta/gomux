@@ -5,16 +5,13 @@ import (
 )
 
 type Products struct {
-	ProductID     int       `json:"produto_id"`
-	Name          string    `json:"name"`
-	Code          int       `json:"code"`
-	Price         float64   `json:"price"`
-	Stock         int       `json:"stock"`
-	Category      string    `json:"category"`
-	Date_Validity time.Time `json:"date_validity"`
-	Brand         string    `json:"brand"`
-	Sector        string    `json:"sector"`
-	Created_at    time.Time `json:"created_at"`
-	Updated_at    time.Time `json:"upated_at"`
-	CustomerID    int       `json:"customer_id"`
+	Product_id int       `json:"product_id"`
+	Name       string    `json:"name"`
+	Price      float32   `json:"price"`
+	Code       int       `json:"code"`
+	Validity   time.Time `json:"validity"`
+	Stock      int       `json:"stock"`
+	Entrace    time.Time `json:"entrace"`
+	Createat   time.Time `json:"createat"`
+	Updatedat  time.Time `json:"upatedat"`
 }

@@ -30,18 +30,15 @@ func (pr *ProductRepository) GetProduct() ([]entity.Products, error) {
 	defer rows.Close()
 	for rows.Next() {
 		err = rows.Scan(
-			&productsObj.ProductID,
+			&productsObj.Product_id,
 			&productsObj.Name,
-			&productsObj.Code,
 			&productsObj.Price,
+			&productsObj.Code,
+			&productsObj.Validity,
 			&productsObj.Stock,
-			&productsObj.Category,
-			&productsObj.Date_Validity,
-			&productsObj.Brand,
-			&productsObj.Created_at,
-			&productsObj.Updated_at,
-			&productsObj.CustomerID,
-			&productsObj.Sector,
+			&productsObj.Entrace,
+			&productsObj.Createat,
+			&productsObj.Updatedat,
 		)
 
 		if err != nil {

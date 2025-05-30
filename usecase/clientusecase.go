@@ -26,7 +26,7 @@ func (cr *CustomerUsecase) PostCustomer(customer entity.Customers) (entity.Custo
 	if err != nil {
 		return entity.Customers{}, err
 	}
-	customer.ID = customerId
+	customer.Customer_id = customerId
 
 	return customer, nil
 }

@@ -20,7 +20,7 @@ func (pr *ProductCreateUsecase) Create(product entity.Products) (entity.Products
 	if err != nil {
 		return entity.Products{}, err
 	}
-	product.ProductID = productId
+	product.Product_id = productId
 
 	return product, nil
 }
