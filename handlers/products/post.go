@@ -4,7 +4,6 @@ import (
 	"apigo/entity"
 	"apigo/usecase/products"
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -24,17 +23,24 @@ func (pr *ProductCreateHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	var product entity.Products
 
-	if product.Price == "" {
-		fmt.Println("erro aqui")
-	}
-
 	err := json.NewDecoder(r.Body).Decode(&product)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
+	if product.Price == "" {
+		http.Error(w, "Pricse ir required", http.StatusBadRequest)
+		return
+	}
+
 	insertProducts, err := pr.productUsecase.Create(product)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(insertProducts)
 
