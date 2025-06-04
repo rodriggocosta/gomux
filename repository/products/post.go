@@ -3,7 +3,8 @@ package products
 import (
 	"apigo/entity"
 	"database/sql"
-	"fmt"
+
+	"github.com/shopspring/decimal"
 )
 
 type ProductCreateRepository struct {
@@ -18,24 +19,28 @@ func NewProductsCreateRepository(connection *sql.DB) ProductRepository {
 
 // refatorar essa parte amanha
 func (pr *ProductCreateRepository) Create(products entity.Products) (int, error) {
-
-	var product_id int
-
-	query, err := pr.connection.Prepare("INSERT INTO products(name, price, code, validity, stock, entrace) VALUES($1, $2, $3, $4, $5, $6)")
-
+	priceDec, err := decimal.NewFromString(products.Price)
 	if err != nil {
-		fmt.Println(err)
-		return 0, nil
+		return 0, err
 	}
-
-	// OBS: aqui eu tenho que ver dois a questao da tabela, por conta da fk de customers
-	err = query.QueryRow(products.Name, products.Price, products.Code, products.Validity, products.Stock, products.Entrace).Scan(&product_id)
-
+	query, err := pr.connection.Prepare("INSERT INTO products(name, price, code, validity, stock, entrace) VALUES ($1, $2, $3, $4, $5, $6) RETURNING product_id")
 	if err != nil {
-		fmt.Println(err)
-		return 0, nil
+		return 0, err
 	}
-
 	defer query.Close()
-	return product_id, nil
+
+	var productID int
+	err = query.QueryRow(
+		products.Name,
+		priceDec.String(),
+		products.Code,
+		products.Validity,
+		products.Stock,
+		products.Entrace,
+	).Scan(&productID)
+
+	if err != nil {
+		return 0, err
+	}
+	return productID, nil
 }
