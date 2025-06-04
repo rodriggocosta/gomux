@@ -27,7 +27,7 @@ func (pr *PutProductHandler) PutProduct(w http.ResponseWriter, r *http.Request) 
 	productID, err := strconv.Atoi(converterId)
 
 	if err != nil {
-		http.Error(w, "Id do cliente obrigatorio", http.StatusBadRequest)
+		http.Error(w, "Id do produto obrigatorio", http.StatusBadRequest)
 		return
 	}
 
@@ -41,7 +41,7 @@ func (pr *PutProductHandler) PutProduct(w http.ResponseWriter, r *http.Request) 
 	err = pr.productUsercase.PutProduct(productID, &product)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			http.Error(w, "Cliente nao encontrado", http.StatusNotFound)
+			http.Error(w, "Produto nao encontrado", http.StatusNotFound)
 			return
 		}
 		log.Printf("Erro ao atualizar produtos: %v", err)
@@ -50,5 +50,5 @@ func (pr *PutProductHandler) PutProduct(w http.ResponseWriter, r *http.Request) 
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Cliente atualizado"})
+	json.NewEncoder(w).Encode(map[string]string{"message": "Produto atualizado"})
 }
