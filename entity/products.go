@@ -5,7 +5,7 @@ import (
 )
 
 type Products struct {
-	Product_id int       `json:"product_id"`
+	Product_id int       `Json:"Product_id"`
 	Name       string    `json:"name"`
 	Price      string    `json:"price"`
 	Code       int       `json:"code"`
