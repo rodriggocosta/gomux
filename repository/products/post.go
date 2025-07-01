@@ -23,7 +23,7 @@ func (pr *ProductCreateRepository) Create(products entity.Products) (int, error)
 	if err != nil {
 		return 0, err
 	}
-	query, err := pr.connection.Prepare("INSERT INTO products(name, price, code, validity, stock, entrace) VALUES ($1, $2, $3, $4, $5, $6) RETURNING product_id")
+	query, err := pr.connection.Prepare("INSERT INTO products(name_product, price, code, validity, stock, entrace) VALUES ($1, $2, $3, $4, $5, $6) RETURNING product_id")
 	if err != nil {
 		return 0, err
 	}

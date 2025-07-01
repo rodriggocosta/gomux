@@ -24,7 +24,7 @@ func (pr *PutProductRepository) PutProduct(product_id int, product *entity.Produ
 		return fmt.Errorf("Erro ao converter o preco: %w", err)
 	}
 
-	query := "UPDATE products SET name = $1, price = $2, code = $3, validity = $4, stock = $5, entrace = $6  WHERE product_id = $7"
+	query := "UPDATE products SET name_product = $1, price = $2, code = $3, validity = $4, stock = $5, entrace = $6  WHERE product_id = $7"
 
 	resp, err := pr.connection.Exec(
 		query,
