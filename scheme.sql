@@ -1,39 +1,36 @@
--- AQUI VAI MEUS COMANDOS SQL PARA EU CRIAR AS OUTRAS TABELAS
-
--- TABELA DE  PRODUTOS
-
-CREATE TYPE status AS ENUM ('ATIVO', 'INATIVO');
-
--- DEPOIS ADICIONAR MAIS DUAS COLUNAS CEP OU CNP 
--- E TALVEZ ADICIONAR UM PARA ATIVO OU NAO
--- TABELA DE ENDERES
-CREATE TYPE status AS ENUM ('ACTIVE', 'INACTIVE');
-CREATE TABLE products (
-    product_id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    code INT NOT NULL UNIQUE,
-    price DECIMAL(10,2) NOT NULL,
-    stock INT NOT NULL,
-    expiration_date DATE NOT NULL,
-    supplier VARCHAR(100) NOT NULL,
-    brand VARCHAR(100) NOT NULL,
-    status status,
-    createdAt TIMESTEMP DEFAULT CURRENT_TIMESTAMP,
-    updatedAt TIMESTEMP DEFAULT CURRENT_TIMESTAMP,
-    
-    customer_id INT REFERENCES customers(customer_id)
+-- TABELA DE CLIENTES
+CREATE TABLE customers(
+  customer_id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  phone VARCHAR(11) UNIQUE,
+  cpf VARCHAR(15) NOT NULL UNIQUE,
+  cnpj VARCHAR(30) UNIQUE,
+  create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_t TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABELA address(
-  address_id SERIAL PRIMARY KEY,
-  estado VARCHAR(2) NOT NULL,
-  cidade VARCHAR(255) NOT NULL,
-  bairro VARCHAR(60) NOT NULL,
-  rua VARCHAR(6) NOT NULL,
-  numerodacasa INT,
-  cep VARCHAR(10) NOT NULL,
-  observacao VARCHAR(100)
 
-  customer_id INT REFERENCES customers(customer_id)
-  
+-- TABELA DE PRODUTOS
+CREATE TABLE products(
+  product_id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  price DECIMAL(10, 2) NOT NULL,
+  code  INT NOT NULL UNIQUE,
+  validity DATE NOT NULL,
+  stock INT NOT NULL,
+  entrace DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- TABETABELA IVOT
+CREATE TABLE customers_products(
+  id_customer_product SERIAL PRIMARY KEY,
+  id_customer INT,
+  id_product INT,
+
+  FOREING KEY (id_customer) REFERENCES customers (customer_id),
+  FOREING KEY (id_product) REFERENCES products (product_id)
 );

@@ -57,7 +57,7 @@ func (cr *CustomerRepository) GetCustomers() ([]entity.Customers, error) {
 func (cr *CustomerRepository) PostCustomer(customer entity.Customers) (int, error) {
 	var customer_id int
 
-	query, err := cr.connection.Prepare("INSERT INTO customers(name, email, phone, cpf, cnpj) VALUES($1, $2, $3, $4, $5) RETURNING customer_id")
+	query, err := cr.connection.Prepare("INSERT INTO customers(name_customer, email, phone, cpf, cnpj) VALUES($1, $2, $3, $4, $5) RETURNING customer_id")
 
 	if err != nil {
 		fmt.Println(err)
@@ -130,9 +130,9 @@ func (cr *CustomerRepository) DeleteById(customer_id int) error {
 
 func (cr *CustomerRepository) Update(customer_id int, customer *entity.Customers) error {
 	//	query, err := cr.connection.Prepare("UPADATE customers SET name = $1, email = $2, phone = $3, customer_id = %4")
-	query := "UPDATE customers SET name = $1, email = $2, phone = $3 WHERE customer_id = $4"
+	query := "UPDATE customers SET name_customer = $1, email = $2, phone = $3, cpf = $4, cnpj =$5 WHERE customer_id = $6"
 
-	res, err := cr.connection.Exec(query, customer.Name, customer.Email, customer.Phone, customer_id)
+	res, err := cr.connection.Exec(query, customer.Name, customer.Email, customer.Phone, customer.Cpf, customer.Cnpj, customer_id)
 
 	if err != nil {
 		return fmt.Errorf("Erro ao atualizar dados: %w", err)
