@@ -8,6 +8,10 @@ import (
 	"log"
 	"net/http"
 
+	handlerAddress "apigo/handlers/address"
+	repostiroyAddress "apigo/repository/address"
+	usecaseAddress "apigo/usecase/address"
+
 	handlerProduct "apigo/handlers/products"
 	repositoryProduct "apigo/repository/products"
 	usecaseProduct "apigo/usecase/products"
@@ -59,6 +63,11 @@ func NewRouter() *http.ServeMux {
 	r.HandleFunc("/produtos/editar", putProductHandler.PutProduct)
 	r.HandleFunc("/produto/delete", deleteHandlerProduct.Delete)
 	r.HandleFunc("/produto", updateProductHalnder.GetByIdProduct)
+
+	addressRepository := repostiroyAddress.NewAddressCreate(dbConnection)
+	addressUasecas := usecaseAddress.NewAddress(repostiroyAddress.AddressPostReropsitory(addressRepository))
+	addressHandler := handlerAddress.NewAddressHandler(addressUasecas)
+	r.HandleFunc("/endereco/cadastrar", addressHandler.Create)
 
 	return r
 }

@@ -38,5 +38,5 @@ func (pr *DeleteProductHandler) Delete(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Erro no Servidor", http.StatusInternalServerError)
 	}
 
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusNoContent)
 }
