@@ -72,8 +72,12 @@ func NewRouter() *http.ServeMux {
 	getAddressUsecase := usecaseAddress.NewAddressUsecase(getAddressRespository)
 	getAddressHandler := handlerAddress.NewGetAddresshandler(getAddressUsecase)
 
+	updateAddressRepository := repostiroyAddress.NewUpdateAddressRepository(dbConnection)
+	upadateAddressUsecase := usecaseAddress.NewPutAddress(updateAddressRepository)
+	updateAddressHandler := handlerAddress.NewPutAddressHandler(upadateAddressUsecase)
 	r.HandleFunc("/endereco/cadastrar", addressHandler.Create)
 	r.HandleFunc("/endereco", getAddressHandler.GetAddress)
+	r.HandleFunc("/endereco/editar", updateAddressHandler.PutAddress)
 
 	return r
 }
