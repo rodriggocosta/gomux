@@ -9,7 +9,7 @@ import (
 	"net/http"
 
 	handlerAddress "apigo/handlers/address"
-	repostiroyAddress "apigo/repository/address"
+	repositoryAddress "apigo/repository/address"
 	usecaseAddress "apigo/usecase/address"
 
 	handlerProduct "apigo/handlers/products"
@@ -64,20 +64,26 @@ func NewRouter() *http.ServeMux {
 	r.HandleFunc("/produto/delete", deleteHandlerProduct.Delete)
 	r.HandleFunc("/produto", updateProductHalnder.GetByIdProduct)
 
-	addressRepository := repostiroyAddress.NewAddressCreate(dbConnection)
-	addressUasecas := usecaseAddress.NewAddress(repostiroyAddress.AddressPostReropsitory(addressRepository))
+	addressRepository := repositoryAddress.NewAddressCreate(dbConnection)
+	addressUasecas := usecaseAddress.NewAddress(repositoryAddress.AddressPostReropsitory(addressRepository))
 	addressHandler := handlerAddress.NewAddressHandler(addressUasecas)
 
-	getAddressRespository := repostiroyAddress.NewGetAddress(dbConnection)
+	getAddressRespository := repositoryAddress.NewGetAddress(dbConnection)
 	getAddressUsecase := usecaseAddress.NewAddressUsecase(getAddressRespository)
 	getAddressHandler := handlerAddress.NewGetAddresshandler(getAddressUsecase)
 
-	updateAddressRepository := repostiroyAddress.NewUpdateAddressRepository(dbConnection)
+	updateAddressRepository := repositoryAddress.NewUpdateAddressRepository(dbConnection)
 	upadateAddressUsecase := usecaseAddress.NewPutAddress(updateAddressRepository)
 	updateAddressHandler := handlerAddress.NewPutAddressHandler(upadateAddressUsecase)
+
+	deleteAddressRepository := repositoryAddress.NewDeleteAddressRespository(dbConnection)
+	deleteAddressUsecase := usecaseAddress.NewDeleteAddress(repositoryAddress.DeleteAddressRepository(deleteAddressRepository))
+	deleAddressHandler := handlerAddress.NewDeleteAddressHandler(deleteAddressUsecase)
+
 	r.HandleFunc("/endereco/cadastrar", addressHandler.Create)
 	r.HandleFunc("/endereco", getAddressHandler.GetAddress)
 	r.HandleFunc("/endereco/editar", updateAddressHandler.PutAddress)
+	r.HandleFunc("/endereco/excluir", deleAddressHandler.Delete)
 
 	return r
 }
