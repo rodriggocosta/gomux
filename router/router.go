@@ -93,7 +93,7 @@ func NewRouter() *http.ServeMux {
 	r.HandleFunc("/endereco/editar", updateAddressHandler.PutAddress)
 	r.HandleFunc("/endereco/excluir", deleAddressHandler.Delete)
 
-	r.HandleFunc("/user", userGetHandler.GetUser)
+	r.HandleFunc("/usuario", userGetHandler.GetUser)
 
 	return r
 }

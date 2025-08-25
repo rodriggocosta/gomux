@@ -31,10 +31,11 @@ func (us *UsersGetRepository) GetUser() ([]entity.Users, error) {
 	for row.Next() {
 		err = row.Scan(
 			&usersObject.ID,
-			&usersObject.UserName,
 			&usersObject.Email,
 			&usersObject.Password,
 			&usersObject.Role,
+			&usersObject.Created_at,
+			&usersObject.Updated_at,
 		)
 		if err != nil {
 			fmt.Println(err)
