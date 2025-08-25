@@ -15,6 +15,10 @@ import (
 	handlerProduct "apigo/handlers/products"
 	repositoryProduct "apigo/repository/products"
 	usecaseProduct "apigo/usecase/products"
+
+	handlerUser "apigo/handlers/users"
+	repositoryUser "apigo/repository/users"
+	usecaseUser "apigo/usecase/users"
 )
 
 func NewRouter() *http.ServeMux {
@@ -80,10 +84,16 @@ func NewRouter() *http.ServeMux {
 	deleteAddressUsecase := usecaseAddress.NewDeleteAddress(repositoryAddress.DeleteAddressRepository(deleteAddressRepository))
 	deleAddressHandler := handlerAddress.NewDeleteAddressHandler(deleteAddressUsecase)
 
+	userGetRepository := repositoryUser.NewUserGet(dbConnection)
+	userGetUsecase := usecaseUser.NewUserGet(userGetRepository)
+	userGetHandler := handlerUser.NewUserHandler(userGetUsecase)
+
 	r.HandleFunc("/endereco/cadastrar", addressHandler.Create)
 	r.HandleFunc("/endereco", getAddressHandler.GetAddress)
 	r.HandleFunc("/endereco/editar", updateAddressHandler.PutAddress)
 	r.HandleFunc("/endereco/excluir", deleAddressHandler.Delete)
+
+	r.HandleFunc("/usuario", userGetHandler.GetUser)
 
 	return r
 }
